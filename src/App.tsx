@@ -1,12 +1,12 @@
 import React from 'react';
-import Restaurant from './components/Restaurant';
+import RestaurantTable from './components/RestaurantTable';
 import 'minireset.css';
 import './App.scss';
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <Restaurant/>
+      <RestaurantTable/>
     </div>
   );
 }
