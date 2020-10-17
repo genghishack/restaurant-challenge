@@ -1,31 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {RequestOptions} from "https";
-
-interface Restaurant {
-  address1: string;
-  attire: string;
-  city: string;
-  genre: string;
-  hours: string;
-  id: string;
-  lat: string;
-  long: string;
-  name: string;
-  state: string;
-  tags: string;
-  telephone: string;
-  website: string;
-  zip: string;
-}
-
-export async function getData<T>(
-  request: RequestInfo,
-  options: RequestInit
-): Promise<T> {
-  const response = await fetch(request, options);
-  const body = response.json();
-  return body;
-}
+import {Restaurant} from '../interfaces';
+import {getData} from '../utils';
+import RestaurantRow from "./RestaurantRow";
 
 const RestaurantTable: React.FC = () => {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([])
@@ -33,10 +9,10 @@ const RestaurantTable: React.FC = () => {
   useEffect(() => {
     const getRestaurants = async () => {
       const data = await getData<Restaurant[]>(
-        process.env.API_ENDPOINT!,
+        'https://code-challenge.spectrumtoolbox.com/api/restaurants',
         {
           headers: {
-            Authorization: process.env.API_KEY!,
+            Authorization: 'Api-Key q3MNxtfep8Gt',
           },
         }
       );
@@ -47,11 +23,22 @@ const RestaurantTable: React.FC = () => {
 
   return (
     <div className="restaurant">
-      {restaurants.map((restaurant: Restaurant) => {
-        return (
-          <div>{restaurant.name}</div>
-        )
-      })}
+      <table>
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>City</th>
+          <th>State</th>
+          <th>Phone #</th>
+          <th>Genres</th>
+        </tr>
+        </thead>
+        <tbody>
+        {restaurants.map((restaurant: Restaurant) => (
+          <RestaurantRow restaurant={restaurant}/>
+        ))}
+        </tbody>
+      </table>
     </div>
   )
 }
